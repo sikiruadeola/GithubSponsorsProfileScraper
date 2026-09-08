@@ -1,0 +1,12 @@
+{
+    "actorSpecification": 1,
+    "name": "github-sponsors-profile-scraper",
+    "title": "GitHub Sponsors Profile Scraper",
+    "description": "Walks every public GitHub Sponsors profile and saves each one's login, profile link, bio, and any personal links, website, or public email found.",
+    "version": "0.0",
+    "meta": {
+        "templateId": "ts-empty"
+    },
+    "input": "./input_schema.json",
+    "dockerfile": "../Dockerfile"
+}

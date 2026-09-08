@@ -1,0 +1,42 @@
+{
+    "$schema": "https://apify.com/schemas/v1/input.ide.json",
+    "title": "GitHub Sponsors Profile Scraper",
+    "description": "Walks every public GitHub Sponsors profile, oldest listing order first, and saves each one's login, profile link, bio, and any links found. Remembers where it left off between runs.",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "githubToken": {
+            "title": "GitHub Personal Access Token (optional)",
+            "type": "string",
+            "description": "Leave this blank to use the token already built into the actor. Only fill this in if you want to run this specific job under a different token. A token with no scopes ticked at all is enough.",
+            "editor": "textarea",
+            "isSecret": true,
+            "prefill": ""
+        },
+        "pageSize": {
+            "title": "Page Size",
+            "type": "integer",
+            "description": "How many profiles to request per page, maximum 100.",
+            "editor": "number",
+            "default": 50,
+            "minimum": 1,
+            "maximum": 100
+        },
+        "maxNewProfiles": {
+            "title": "Maximum New Profiles This Run",
+            "type": "integer",
+            "description": "Stop this run after saving this many new profiles. Use 0 for unlimited.",
+            "editor": "number",
+            "default": 0,
+            "minimum": 0
+        },
+        "maxPages": {
+            "title": "Maximum Pages This Run",
+            "type": "integer",
+            "description": "Stop this run after fetching this many pages. Use 0 for unlimited.",
+            "editor": "number",
+            "default": 0,
+            "minimum": 0
+        }
+    }
+}
