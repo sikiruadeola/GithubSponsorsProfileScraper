@@ -137,7 +137,7 @@ function buildRecord(node: SponsorableNode): ProfileRecord {
     };
 }
 
-async function fetchSponsorablesPage(
+async function fetchSponsorablesPageOnce(
     token: string,
     pageSize: number,
     afterCursor: string | null,
@@ -170,6 +170,26 @@ async function fetchSponsorablesPage(
     }
 
     return payload.data;
+}
+
+// Larger page sizes occasionally get a 502 back, most likely GitHub's own
+// server having trouble building a big response for this particular query
+// in one go. Retrying the same page with a smaller size fixes this in
+// practice without losing any coverage, just asking for less at once.
+async function fetchSponsorablesPage(
+    token: string,
+    pageSize: number,
+    afterCursor: string | null,
+): Promise<SponsorablesResponse['data']> {
+    try {
+        return await fetchSponsorablesPageOnce(token, pageSize, afterCursor);
+    } catch (error) {
+        console.log(`First attempt at this page failed: ${errorMessage(error)}. Retrying smaller.`);
+        await new Promise((resolve) => setTimeout(resolve, 2_000));
+
+        const smallerPageSize = Math.max(3, Math.floor(pageSize / 2));
+        return fetchSponsorablesPageOnce(token, smallerPageSize, afterCursor);
+    }
 }
 
 async function loadState(): Promise<RunState> {
